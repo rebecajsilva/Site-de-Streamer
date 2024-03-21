@@ -1,38 +1,3 @@
-<?php
-session_start(); //habilitar sessões
-include "conn.php";
-if (isset($_GET["btnLogar"])) {
-    $usuario = $_GET["email"] ?? null;
-    $senha = $_GET["senha"] ?? null;
-
-    if ($usuario && $senha) {
-        $sql = "SELECT u.id_usuario as id_user, u.nome_usuario, u.data_nascimento, u.email, u.senha 
-            FROM cadastro_usuario AS u
-            WHERE email='$usuario'";
-        $res = mysqli_query($conn, $sql);
-        if (mysqli_num_rows($res) > 0) {
-            $linha = mysqli_fetch_assoc($res);
-            $hash = $linha["senha"];
-            
-            if (password_verify($senha, $hash)) {
-                $_SESSION["usuario"] = $linha["email"];
-                 $_SESSION["id_user"] = $linha["id_user"];
-                header('location:index.php');
-            } else {
-                header('location:login.php?erro=1');
-            }
-        } else {
-            echo "não existe usuario";
-        }
-    }
-}
-
-?>
-
-
-
-
-
 
 <!doctype html>
 <html lang="en">
